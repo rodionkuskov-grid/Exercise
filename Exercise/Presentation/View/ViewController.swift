@@ -9,9 +9,10 @@ import UIKit
 import SwiftDate
 
 class ViewController: UIViewController {
+    var fileService: FileManagerService?
+    var achivementService: AchivmentService?
     
     // MARK:- Private variables
-    private let fileService: FileManagerService = FileManagerServiceImpl.shared
     private(set) var allJsonNamesFromFolder: [String] = []
 
     private(set) var numberOfSuccessfulThreeDaysRunning: Int? {
@@ -84,7 +85,7 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .white
         configureLayout()
-        allJsonNamesFromFolder = fileService.getAllJsonNamesFromFolder()
+        allJsonNamesFromFolder = fileService?.getAllJsonNamesFromFolder() ?? []
     }
     
     // MARK:- Configuration
@@ -144,10 +145,6 @@ class ViewController: UIViewController {
 }
 
 extension ViewController {
-    private func daysBetween(start: Date, end: Date) -> Int {
-       Calendar.current.dateComponents([.day], from: start, to: end).day!
-    }
-    
     private func onSearchButtonPressedAction() {
         guard searchTextField.text?.isEmpty == false else {
             print("🔥 Text field should not be empty 🔥")
@@ -166,7 +163,7 @@ extension ViewController {
         var allDistances: [Double] = []
         
         for json in allJsonNamesFromFolder {
-            if let userTrainingItem = fileService.getDataFromFile(with: json, for: UserTrainingDTO.self) {
+            if let userTrainingItem = fileService?.getDataFromFile(with: json, for: UserTrainingDTO.self) {
                 if userTrainingItem.userId == searchingUserId && userTrainingItem.type == .run {
                     userTrainings.append(userTrainingItem)
                 }
@@ -188,49 +185,8 @@ extension ViewController {
         }
 
         let uniqueDates = Array(Set(trainingDatesWithCompletedDistances)).sorted()
-        numberOfSuccessfulThreeDaysRunning = getNumberOfSuccessfulThreeDaysRunning(from: uniqueDates)
-        numberOfWeeksMarathons = getNumberOfTenKilometersMarathonsPerWeek(from: allDates, distances: allDistances)
-        
-        // MARK:- Task number 3 – get number of trainings when user burned more than 500 calories per training
-        numberOfCaloriesChallengeCompleted = userTrainings.filter { $0.calories ?? 0.0 >= 500.0 }.count
-    }
-    
-    // MARK:- Task number 1
-    private func getNumberOfSuccessfulThreeDaysRunning(from dates: [Date]) -> Int {
-        var tempCounter: Int = 1
-        var successCounter: Int = 0
-        
-        for index in 1 ... dates.count - 1 {
-            let diff = daysBetween(start: dates[index], end: dates[index - 1])
-            if abs(diff) == 1 {
-                tempCounter += 1
-                if tempCounter == 3 {
-                    successCounter += 1
-                    tempCounter = 0
-                }
-            } else {
-                tempCounter = 0
-            }
-        }
-        
-        return successCounter
-    }
-    
-    // MARK:- Task number 2
-    private func getNumberOfTenKilometersMarathonsPerWeek(from dates: [Date], distances: [Double]) -> Int {
-        var successCounter: Int = 0
-        for index in 0 ... dates.count - 1 {
-            if (dates[index].getWeekDay() == .monday) {
-                let endOfWeek = dates[index].dateByAdding(6, .day).date
-                let range = dates[index]...endOfWeek
-                if range.contains(dates[index + 1]) {
-                    if (distances[index] + distances[index + 1] > 10.0) {
-                        successCounter += 1
-                    }
-                }
-            }
-        }
-        
-        return successCounter
+        numberOfSuccessfulThreeDaysRunning = achivementService?.getNumberOfSuccessfulThreeDaysRunning(from: uniqueDates)
+        numberOfWeeksMarathons = achivementService?.getNumberOfTenKilometersMarathonsPerWeek(from: allDates, distances: allDistances)
+        numberOfCaloriesChallengeCompleted = achivementService?.getNumberOfTrainingsWithComletedCalories(from: userTrainings)
     }
 }

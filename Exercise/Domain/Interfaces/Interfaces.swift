@@ -30,5 +30,7 @@ protocol FileManagerService {
 
 // MARK:- Service for calculating number of completed achivements
 protocol AchivmentService {
-    
+    func getNumberOfSuccessfulThreeDaysRunning(from dates: [Date]) -> Int
+    func getNumberOfTenKilometersMarathonsPerWeek(from dates: [Date], distances: [Double]) -> Int
+    func getNumberOfTrainingsWithComletedCalories(from trainings: [UserTrainingDTO]) -> Int
 }

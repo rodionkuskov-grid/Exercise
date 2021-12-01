@@ -10,6 +10,8 @@
 		41647910E85C9E69C756F789 /* Pods_Exercise.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 524364F9A4A17685E8019CBA /* Pods_Exercise.framework */; };
 		9E8865AEBFC4EE70BEEBD31A /* Pods_ExerciseTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12A8616809E3514224E7D8B2 /* Pods_ExerciseTests.framework */; };
 		E91B79BED7F84F97CD4ACDA2 /* Pods_Exercise_ExerciseUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 457613D4741CB685F3B191BE /* Pods_Exercise_ExerciseUITests.framework */; };
+		F042117927581DBF008D6AD7 /* AchivementService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F042117827581DBF008D6AD7 /* AchivementService.swift */; };
+		F042117B275820EC008D6AD7 /* GeneratedMocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = F042117A275820EC008D6AD7 /* GeneratedMocks.swift */; };
 		F0A05FD2275759220027E03F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0A05FD1275759220027E03F /* AppDelegate.swift */; };
 		F0A05FD4275759220027E03F /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0A05FD3275759220027E03F /* SceneDelegate.swift */; };
 		F0A05FD6275759220027E03F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0A05FD5275759220027E03F /* ViewController.swift */; };
@@ -54,6 +56,8 @@
 		8396A1D0706AF0229BC4B5B8 /* Pods-Exercise.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Exercise.release.xcconfig"; path = "Target Support Files/Pods-Exercise/Pods-Exercise.release.xcconfig"; sourceTree = "<group>"; };
 		A4744381A50D59C93A8A2CA4 /* Pods-Exercise-ExerciseUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Exercise-ExerciseUITests.debug.xcconfig"; path = "Target Support Files/Pods-Exercise-ExerciseUITests/Pods-Exercise-ExerciseUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		E24A567370D0889763A19DAB /* Pods-ExerciseTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ExerciseTests.release.xcconfig"; path = "Target Support Files/Pods-ExerciseTests/Pods-ExerciseTests.release.xcconfig"; sourceTree = "<group>"; };
+		F042117827581DBF008D6AD7 /* AchivementService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchivementService.swift; sourceTree = "<group>"; };
+		F042117A275820EC008D6AD7 /* GeneratedMocks.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GeneratedMocks.swift; sourceTree = "<group>"; };
 		F0A05FCE275759220027E03F /* Exercise.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Exercise.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F0A05FD1275759220027E03F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F0A05FD3275759220027E03F /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -156,6 +160,7 @@
 			isa = PBXGroup;
 			children = (
 				F0A05FE8275759240027E03F /* ExerciseTests.swift */,
+				F042117A275820EC008D6AD7 /* GeneratedMocks.swift */,
 			);
 			path = ExerciseTests;
 			sourceTree = "<group>";
@@ -208,6 +213,7 @@
 				F0CBC419275768F600F6218F /* ErrorLoggerService.swift */,
 				F0CBC41B2757690200F6218F /* JsonParsingService.swift */,
 				F0CBC41D2757690800F6218F /* FileManagerService.swift */,
+				F042117827581DBF008D6AD7 /* AchivementService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -265,6 +271,7 @@
 			buildConfigurationList = F0A05FF8275759240027E03F /* Build configuration list for PBXNativeTarget "Exercise" */;
 			buildPhases = (
 				472DE4C0F407AB63417803B9 /* [CP] Check Pods Manifest.lock */,
+				F042117727581B8A008D6AD7 /* Generate mocks */,
 				F0A05FCA275759220027E03F /* Sources */,
 				F0A05FCB275759220027E03F /* Frameworks */,
 				F0A05FCC275759220027E03F /* Resources */,
@@ -489,6 +496,24 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Exercise-ExerciseUITests/Pods-Exercise-ExerciseUITests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		F042117727581B8A008D6AD7 /* Generate mocks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Generate mocks";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if [ $ACTION == \"indexbuild\" ]; then\n  echo \"Not running Cuckoo generator during indexing.\"\n  exit 0 \nfi\n\n# Skip for preview builds\nif [ \"${ENABLE_PREVIEWS}\" = \"YES\" ]; then\n  echo \"Not running Cuckoo generator during preview builds.\"\n  exit 0\nfi\n\n# Define output file. Change \"${PROJECT_DIR}/${PROJECT_NAME}Tests\" to your test's root source folder, if it's not the default name.\nOUTPUT_FILE=\"${PROJECT_DIR}/${PROJECT_NAME}Tests/GeneratedMocks.swift\"\necho \"Generated Mocks File = ${OUTPUT_FILE}\"\n\n# Define input directory. Change \"${PROJECT_DIR}/${PROJECT_NAME}\" to your project's root source folder, if it's not the default name.\nINPUT_DIR=\"${PROJECT_DIR}/${PROJECT_NAME}\"\necho \"Mocks Input Directory = ${INPUT_DIR}\"\n\n# Generate mock files, include as many input files as you'd like to create mocks for.\n\"${PODS_ROOT}/Cuckoo/run\" generate --testable \"${PROJECT_NAME}\" \\\n--output \"${OUTPUT_FILE}\" \\\n\"${INPUT_DIR}/Domain/Interfaces/Interfaces.swift\"\n# ... and so forth, the last line should never end with a backslash\n\n# After running once, locate `GeneratedMocks.swift` and drag it into your Xcode test target group.\n";
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -499,6 +524,7 @@
 				F0A05FD6275759220027E03F /* ViewController.swift in Sources */,
 				F0A05FD2275759220027E03F /* AppDelegate.swift in Sources */,
 				F0CBC417275768C300F6218F /* UserTrainingDTO.swift in Sources */,
+				F042117927581DBF008D6AD7 /* AchivementService.swift in Sources */,
 				F0CBC41C2757690200F6218F /* JsonParsingService.swift in Sources */,
 				F0DE5578275814AB007B19A1 /* DateExtension.swift in Sources */,
 				F0CBC41A275768F600F6218F /* ErrorLoggerService.swift in Sources */,
@@ -513,6 +539,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F0A05FE9275759240027E03F /* ExerciseTests.swift in Sources */,
+				F042117B275820EC008D6AD7 /* GeneratedMocks.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

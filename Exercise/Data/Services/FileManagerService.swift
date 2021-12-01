@@ -8,7 +8,6 @@
 import Foundation
 
 class FileManagerServiceImpl: FileManagerService {
-    static let shared = FileManagerServiceImpl()
     private let loggerService: ErrorLoggerService = ErrorLoggerServiceImpl.shared
     private let jsonService: JsonParsingService = JsonParsingServiceImpl.shared
     
